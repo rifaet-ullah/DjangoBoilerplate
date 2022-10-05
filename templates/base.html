@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock title %} Title </title>
+    {% load static %}
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+<div class="fixed right-0 w-96 z-10 mr-6 mt-6">
+    {% for message in messages %}
+        {% if message.tags == 'error' %}
+            {% include 'components/alert.html' with bg_color='bg-red-400' message=message %}
+        {% endif %}
+
+        {% if message.tags == 'warning' %}
+            {% include 'components/alert.html' with bg_color='bg-orange-400' message=message %}
+        {% endif %}
+
+        {% if message.tags == 'info' %}
+            {% include 'components/alert.html' with bg_color='bg-indigo-400' message=message %}
+        {% endif %}
+
+        {% if message.tags == 'success' %}
+            {% include 'components/alert.html' with bg_color='bg-teal-400' message=message %}
+        {% endif %}
+    {% endfor %}
+</div>
+
+{% include 'partials/navbar.html' %}
+
+<main class="text-gray-600 body-font">
+    <div class="container mx-auto">
+        {% block content %}
+        <p class="text-2xl text-center py-48">This page is under development</p>
+        {% endblock content %}
+    </div>
+</main>
+
+{% include 'partials/footer.html' %}
+
+<script defer src="{% static 'js/common.js' %}"></script>
+
+</body>
+</html>

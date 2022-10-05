@@ -1,0 +1,50 @@
+<header class="text-gray-600 body-font">
+    <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+        <a href="{% url 'index' %}" class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round"
+                 stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full"
+                 viewBox="0 0 24 24">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+            </svg>
+            <span class="ml-3 text-xl">Rifat</span>
+        </a>
+        <nav class="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-l md:border-gray-400	flex flex-wrap items-center text-base justify-center">
+            {% if request.user.is_authenticated %}
+            <a class="mr-5 hover:text-gray-900" href="{% url 'public:dashboard' %}">Dashboard</a>
+            {% else %}
+            <a class="mr-5 hover:text-gray-900" href="{% url 'index' %}">Home</a>
+            {% endif %}
+            <a class="mr-5 hover:text-gray-900" href="{% url 'public:blog' %}">Blog</a>
+            <a class="mr-5 hover:text-gray-900" href="{% url 'public:contact' %}">Contact</a>
+            <a class="mr-5 hover:text-gray-900" href="{% url 'public:about' %}">About</a>
+        </nav>
+        {% if request.user.is_authenticated %}
+        <div class="flex items-center">
+            <img class="w-10 h-10 rounded-full border border-2 mr-4" src="{{ request.user.avatar.url }}" alt="{{ request.user.full_name }}">
+            {% if request.user.is_superuser %}
+            <a class="mr-4 hover:text-gray-900" href="/admin">Admin</a>
+            {% endif %}
+            <form method="post" action="{% url 'public:sign-out' %}">
+                {% csrf_token %}
+                <button class="inline-flex items-center text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-base mt-4 md:mt-0">
+                    Sign Out
+                    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                         class="w-4 h-4 ml-1" viewBox="0 0 24 24">
+                        <path d="M5 12h14M12 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+            </form>
+        </div>
+        {% else %}
+        <form autocomplete="off" class="flex items-center" method="post" action="{% url 'public:sign-in' %}">
+            {% csrf_token %}
+            {% include 'components/input.html' with type='email' id='email' name='email' placeholder='Email' %}
+            <span class="mr-4"></span>
+            {% include 'components/input.html' with type='password' id='password' name='password' placeholder='Password' %}
+            <button class="bg-indigo-500 border-0 w-48 py-2 px-3 focus:outline-none hover:bg-indigo-600 rounded text-base text-white mt-4 ml-4 md:mt-0">
+                Sign In
+            </button>
+        </form>
+        {% endif %}
+    </div>
+</header>
