@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:14-alpine
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=MyUser
+      - POSTGRES_PASSWORD=MyUser123
+      - POSTGRES_DB=MyDB
+    restart: always
+  web:
+    build: .
+    command: ./entrypoint.sh
+    volumes:
+      - .:/app
+    ports:
+      - "8000:5000"
+    environment:
+      - DEBUG=0
+      - SECRET_KEY=c2VjcmV0a2V5Cg==
+      - ALLOWED_HOSTS=localhost,127.0.0.1
+      - NAME=MyDB
+      - USER=MyUser
+      - PASSWORD=MyUser123
+      - HOST=db
+      - PORT=5432
+    restart: always
+    depends_on:
+      - db

@@ -43,7 +43,7 @@ class Config:
 
     @property
     def db_password(self) -> str:
-        return self.__env.str("Password")
+        return self.__env.str("PASSWORD")
 
     @property
     def db_url(self) -> str:
